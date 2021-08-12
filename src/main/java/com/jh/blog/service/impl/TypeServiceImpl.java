@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ public class TypeServiceImpl implements TypeService {
 
     /**
      * 增删改需要加事务注解@Transactional
+     *
      * @param type
      * @return
      */
@@ -40,16 +42,34 @@ public class TypeServiceImpl implements TypeService {
     }
 
 
-//    所有标签
+    //    所有标签
     @Override
     public List<Type> getAllType() {
         return typeDao.getAllType();
     }
 
-//    博客有用到的标签
+    //    博客主页展示标签(标签使用次数从高到低排序)
     @Override
     public List<Type> getBlogType() {
-        return typeDao.getBlogType();
+        List<Type> blogType = typeDao.getBlogType();
+
+        blogType.sort(new Comparator<Type>() {
+            @Override
+            public int compare(Type t1, Type t2) {
+                int s1 = t1.getBlogs().size();
+                int s2 = t2.getBlogs().size();
+                if (s1 > s2) {
+                    return -1;
+                } else if (s1 < s2) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        return blogType;
+
     }
 
     @Transactional

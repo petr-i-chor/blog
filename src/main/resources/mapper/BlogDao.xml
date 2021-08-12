@@ -63,6 +63,7 @@
                        on b.type_id = t.id
              left join t_user u
                        on u.id = b.user_id
+    where b.published = 1
     order by b.update_time desc
     </select>
 
@@ -97,7 +98,7 @@
                            on b.type_id = t.id
                  left join t_user u
                            on u.id = b.user_id
-        where b.type_id = #{typeId}
+        where b.type_id = #{typeId} and b.published = 1
         order by b.update_time desc
 
 
@@ -127,13 +128,15 @@
                  left join t_tag t1
                            on tb.tag_id = t1.id
 
-        where t1.id = #{tagId}
+        where t1.id = #{tagId} and b.published = 1
         order by b.update_time desc
     </select>
 
+<!--    推荐博客-->
     <select id="getAllRecommendBlog" resultMap="blog">
         select id, title, recommend
         from t_blog
+        where published = 1
         order by update_time desc;
     </select>
 
@@ -155,6 +158,7 @@
     where b.id = #{id};
     </select>
 
+<!--    博客详情-->
     <select id="getDetailedBlog" resultMap="blog">  /*博客详情*/
     select b.id,
            b.first_picture,
@@ -176,7 +180,7 @@
              LEFT JOIN t_user u on u.id = b.user_id
     WHERE b.id = #{id}
     </select>
-
+<!--    后台搜索-->
     <select id="getSearchBlog" resultMap="blog">
         <bind name="pattern" value="'%' + query + '%'"/>
         select b.id, b.title, b.first_picture, b.views, b.update_time, b.description,
@@ -193,6 +197,7 @@
         order by b.update_time desc
     </select>
 
+<!--    后台搜索分页-->
     <select id="searchAllBlog" parameterType="Blog" resultMap="blog">
         <bind name="pattern" value="'%' + title + '%'"/>
         /*模糊查询*/

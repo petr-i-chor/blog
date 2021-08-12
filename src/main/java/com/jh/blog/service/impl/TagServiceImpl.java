@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -37,7 +38,23 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<Tag> getBlogTag() {
-        return tagDao.getBlogTag();
+
+        List<Tag> blogTag = tagDao.getBlogTag();
+        blogTag.sort(new Comparator<Tag>() {
+            @Override
+            public int compare(Tag o1, Tag o2) {
+                int s1 = o1.getBlogs().size();
+                int s2 = o2.getBlogs().size();
+                if (s1 > s2) {
+                    return -1;
+                } else if (s1 < s2) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return blogTag;
     }
 
     @Override
