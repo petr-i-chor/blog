@@ -89,7 +89,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> getSearchBlog(String query) {
-        return blogDao.getSearchBlog(query);
+        List<Blog> blogs = blogDao.getSearchBlog(query);
+        RedisUtils.setView(blogs,redisTemplate);
+        return blogs;
     }
 
     /**

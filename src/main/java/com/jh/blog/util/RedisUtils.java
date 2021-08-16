@@ -80,8 +80,7 @@ public class RedisUtils {
         String s = format.getDateInstance().format(date);
         String keyHot =s+":";
         ZSetOperations ops = redisTemplate.opsForZSet();
-        Set set = ops.range(keyHot, 0, 19);
-        System.out.println(set.size());
+        Set set = ops.reverseRange(keyHot, 0, 19);
         if (set.size()==0){
             return new ArrayList();
         }else {

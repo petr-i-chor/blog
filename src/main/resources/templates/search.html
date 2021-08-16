@@ -26,6 +26,7 @@
       </div>
 
       <div class="ui top attached teal segment">
+        <input type="hidden" name="query" value="${query}">
         <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${pageInfo.list}">
           <div class="ui middle aligned mobile reversed stackable grid">
             <div class="eleven wide column">
@@ -67,10 +68,10 @@
       <div class="ui bottom attached segment" >
         <div class="ui middle aligned two column grid">
           <div class="column">
-            <div class="item"><a class="ui mini purple basic button" th:href="@{/(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1)}">上一页</a></div>
+            <div class="item"><a class="ui mini purple basic button"  th:href="@{/search/(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:1,query=${query})}">上一页</a></div>
           </div>
           <div class="right aligned column">
-            <div class="item"><a class="ui mini purple basic button" th:href="@{/(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages})}">下一页</a></div>
+            <div class="item"><a class="ui mini purple basic button" th:href="@{/search/(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages},query=${query})}">下一页</a></div>
           </div>
         </div>
       </div>

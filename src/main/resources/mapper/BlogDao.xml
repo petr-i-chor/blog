@@ -88,6 +88,18 @@
         <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
             #{id}
         </foreach>
+
+        order by field(
+
+        b.id,
+
+        <foreach collection="list" separator="," item="id">
+
+        #{id}
+
+        </foreach>
+
+    )
     </select>
 
 
