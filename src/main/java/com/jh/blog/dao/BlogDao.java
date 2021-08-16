@@ -29,6 +29,8 @@ public interface BlogDao {
 
     List<Blog> getSearchBlog(String query);  //全局搜索博客
 
+    List<Blog> getAllHotBlog(List list);  //热榜博客展示
+
     List<Blog> searchAllBlog(BlogQuery blog);  //后台根据标题、分类、推荐搜索博客
 
     List<String> findGroupYear();  //查询所有年份，返回一个集合

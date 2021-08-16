@@ -67,6 +67,30 @@
     order by b.update_time desc
     </select>
 
+    <select id="getAllHotBlog" resultMap="blog">/*查询热榜博客*/
+        select b.id,
+               b.title,
+               b.first_picture,
+               b.views,
+               b.update_time,
+               b.description,
+               t.name typename,
+               u.nickname,
+               u.avatar
+        from t_blog b
+
+                left join t_type t
+                    on b.type_id = t.id
+                left join t_user u
+                    on u.id = b.user_id
+        WHERE
+              b.id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
     <select id="getAllBlog" resultMap="blog">  /*后台博客展示*/
     select b.id,
            b.title,
@@ -98,7 +122,8 @@
                            on b.type_id = t.id
                  left join t_user u
                            on u.id = b.user_id
-        where b.type_id = #{typeId} and b.published = 1
+        where b.type_id = #{typeId}
+          and b.published = 1
         order by b.update_time desc
 
 
@@ -128,11 +153,12 @@
                  left join t_tag t1
                            on tb.tag_id = t1.id
 
-        where t1.id = #{tagId} and b.published = 1
+        where t1.id = #{tagId}
+          and b.published = 1
         order by b.update_time desc
     </select>
 
-<!--    推荐博客-->
+    <!--    推荐博客-->
     <select id="getAllRecommendBlog" resultMap="blog">
         select id, title, recommend
         from t_blog
@@ -158,7 +184,7 @@
     where b.id = #{id};
     </select>
 
-<!--    博客详情-->
+    <!--    博客详情-->
     <select id="getDetailedBlog" resultMap="blog">  /*博客详情*/
     select b.id,
            b.first_picture,
@@ -180,7 +206,7 @@
              LEFT JOIN t_user u on u.id = b.user_id
     WHERE b.id = #{id}
     </select>
-<!--    后台搜索-->
+    <!--    后台搜索-->
     <select id="getSearchBlog" resultMap="blog">
         <bind name="pattern" value="'%' + query + '%'"/>
         select b.id, b.title, b.first_picture, b.views, b.update_time, b.description,
@@ -197,7 +223,7 @@
         order by b.update_time desc
     </select>
 
-<!--    后台搜索分页-->
+    <!--    后台搜索分页-->
     <select id="searchAllBlog" parameterType="Blog" resultMap="blog">
         <bind name="pattern" value="'%' + title + '%'"/>
         /*模糊查询*/

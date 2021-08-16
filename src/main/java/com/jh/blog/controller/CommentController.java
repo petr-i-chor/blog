@@ -1,7 +1,6 @@
 package com.jh.blog.controller;
 
 import com.jh.blog.pojo.Comment;
-import com.jh.blog.pojo.User;
 import com.jh.blog.service.BlogService;
 import com.jh.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CommentController {
     @GetMapping("/comments/{blogId}")  //展示留言
     public String comments(@PathVariable Long blogId, Model model){
         model.addAttribute("comments", commentService.getCommentByBlogId(blogId));
-        model.addAttribute("blog", blogService.getDetailedBlog(blogId));
+        model.addAttribute("blog", blogService.getDetailedBlog2(blogId));
         return "blog :: commentList";
     }
 
@@ -42,7 +41,7 @@ public class CommentController {
     @PostMapping("/comments")   //提交留言
     public String post(Comment comment, HttpSession session){
         Long blogId = comment.getBlog().getId();
-        comment.setBlog(blogService.getDetailedBlog(blogId));  //绑定博客与评论
+        comment.setBlog(blogService.getDetailedBlog2(blogId));  //绑定博客与评论
         comment.setBlogId(blogId);
         comment.setAvatar(avatar);
         /*User user = (User) session.getAttribute("user");

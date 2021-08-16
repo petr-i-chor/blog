@@ -7,8 +7,11 @@ import com.jh.blog.dao.BlogDao;
 import com.jh.blog.pojo.Blog;
 import com.jh.blog.pojo.BlogAndTag;
 import com.jh.blog.service.BlogService;
+import com.jh.blog.util.RedisUtils;
 import com.jh.blog.vo.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,7 +20,10 @@ import java.util.*;
 public class BlogServiceImpl implements BlogService {
 
     @Autowired
-    BlogDao blogDao;
+    private BlogDao blogDao;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public Blog getBlog(Long id) {
@@ -26,6 +32,20 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Blog getDetailedBlog(Long id) {
+        Blog blog = blogDao.getDetailedBlog(id);
+        if (blog == null) {
+            throw new NotFoundException("该博客不存在");
+        }
+        RedisUtils.initializeView(id,blog,redisTemplate);
+        RedisUtils.setHot(id,redisTemplate);
+        String content = blog.getContent();
+        blog.setContent(MarkdownUtils.markdownToHtmlExtensions(content));  //将Markdown格式转换成html
+        return blog;
+    }
+
+    //评论加载获取的blog，反正view反复增加
+    @Override
+    public Blog getDetailedBlog2(Long id) {
         Blog blog = blogDao.getDetailedBlog(id);
         if (blog == null) {
             throw new NotFoundException("该博客不存在");
@@ -42,27 +62,51 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<Blog> getByTypeId(Long typeId) {
-        return blogDao.getByTypeId(typeId);
+        List<Blog> blogs = blogDao.getByTypeId(typeId);
+       RedisUtils.setView(blogs,redisTemplate);
+        return blogs;
     }
 
     @Override
     public List<Blog> getByTagId(Long tagId) {
-        return blogDao.getByTagId(tagId);
+        List<Blog> blogs = blogDao.getByTagId(tagId);
+        RedisUtils.setView(blogs,redisTemplate);
+        return blogs;
     }
 
     @Override
     public List<Blog> getIndexBlog() {
-        return blogDao.getIndexBlog();
+        List<Blog> blogs = blogDao.getIndexBlog();
+        RedisUtils.setView(blogs,redisTemplate);
+        return blogs;
     }
 
     @Override
     public List<Blog> getAllRecommendBlog() {
-        return blogDao.getAllRecommendBlog();
+        List<Blog> blogs = blogDao.getAllRecommendBlog();
+        return blogs;
     }
 
     @Override
     public List<Blog> getSearchBlog(String query) {
         return blogDao.getSearchBlog(query);
+    }
+
+    /**
+     * 获取热门博客
+     * @return
+     */
+    @Override
+    public List<Blog> getAllHotBlog() {
+
+        List list= RedisUtils.getHot(redisTemplate);
+        if (list.size()==0){
+            return list;
+        }else {
+            List<Blog> blogs = blogDao.getAllHotBlog(list);
+            RedisUtils.setView(blogs,redisTemplate);
+            return blogs;
+        }
     }
 
     @Override
@@ -136,6 +180,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public int deleteBlog(Long id) {
+        String keyView = "View_"+id;
+        redisTemplate.delete(keyView);
+
         return blogDao.deleteBlog(id);
     }
 

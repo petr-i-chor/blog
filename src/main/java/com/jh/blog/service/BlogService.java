@@ -11,6 +11,7 @@ public interface BlogService {
     Blog getBlog(Long id);  //后台展示博客
 
     Blog getDetailedBlog(Long id);  //前端展示博客
+    Blog getDetailedBlog2(Long id);  //前端展示博客
 
     List<Blog> getAllBlog();
 
@@ -23,6 +24,8 @@ public interface BlogService {
     List<Blog> getAllRecommendBlog();  //推荐博客展示
 
     List<Blog> getSearchBlog(String query);  //全局搜索博客
+
+    List<Blog> getAllHotBlog();  //热榜博客展示
 
     Map<String,List<Blog>> archiveBlog();  //归档博客
 

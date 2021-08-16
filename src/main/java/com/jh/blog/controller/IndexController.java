@@ -10,6 +10,8 @@ import com.jh.blog.service.BlogService;
 import com.jh.blog.service.TagService;
 import com.jh.blog.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ public class IndexController {
 
     @Autowired
     private TagService tagService;
+
 
     @GetMapping("/")
     public String toIndex(@RequestParam(required = false,defaultValue = "1",value = "pageNum")int pageNum, Model model){

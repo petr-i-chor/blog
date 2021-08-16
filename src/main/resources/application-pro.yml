@@ -5,6 +5,27 @@ spring:
     name: root
     password: root
 
+  redis:
+    #Redis 服务器地址
+    host: 192.168.112.131
+    #Redis 服务器连接端口
+    port: 6379
+    #Redis 数据库索引（默认为 0）
+    database: 0
+    #连接超时时间（毫秒）
+    timeout: 1800000
+    #连接池最大连接数（使用负值表示没有限制）
+    lettuce.pool.max-active: 20
+    #最大阻塞等待时间(负数表示没限制)
+    lettuce.pool.max-wait: -1
+    #连接池中的最大空闲连接
+    lettuce.pool.max-idle: 5
+    #连接池中的最小空闲连接
+    lettuce.pool.min-idle: 0
+
+
+
+
 mybatis:
   type-aliases-package: com.jh.blog.pojo   #设置别名
   mapper-locations: classpath:mapper/*.xml   #ָ指定myBatis的核心配置文件与Mapper映射文件
@@ -12,3 +33,7 @@ mybatis:
           log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   config: classpath:log4j2-boot-pro.xml
+
+
+
+
