@@ -13,11 +13,11 @@ IntelliJ IDEA + Navicat  + Git + Chrome
 开发技术
 ----------
 
-前端技术 ：`<Thymeleaf + semantic-UI + jQuery + ajax>`
+前端技术 ：`Thymeleaf + semantic-UI + jQuery + ajax`
 
-后端技术 ：`<SpringBoot 2.0 + Mybatis + MySQL 5.5+>`
+后端技术 ：`SpringBoot 2.0 + Mybatis + MySQL 5.5+`
 
-中间件技术 :`<Redis 6.0+>`
+中间件技术 :`Redis 6.0+`
 
 主要功能
 ---------
@@ -47,11 +47,11 @@ git clone git@github.com:petr-i-chor/blog.git
 ```
 **用IDEA导入项目**
 
-修改`<resources>`文件下的`<application-pro.yml>`文件里的数据库配置信息和Redis配置信息（Redis需要先自行下载配置）
+修改`resources`文件下的`application-pro.yml`文件里的数据库配置信息和Redis配置信息（Redis需要先自行下载配置）
 
 **导入blog.sql**
 
-在命令行界面打开数据库输入`<source xxx/blog.sql>`
+在命令行界面打开数据库输入`source xxx/blog.sql`
 
 或者直接拖拽到Navicat中
 
@@ -64,15 +64,14 @@ git clone git@github.com:petr-i-chor/blog.git
 问题相关
 ---------
 
-有任何问题欢迎将问题描述发送至我邮箱`<2959543063@qq.com>`,我会尽快解答
+有任何问题欢迎将问题描述发送至我邮箱`2959543063@qq.com`,我会尽快解答
 
 博客也有对本项目有更进一步的讲解
 
 博客地址:https://blog.csdn.net/weixin_45061732
 
-
-
-<hr>
+最后
+--------
 本项目是学习了b站李仁密老师的视频之后的个人理解和知识汇总，视频中持久层的技术用到JPA，本项目用的是Mybatis
 
 视频地址：https://www.bilibili.com/video/BV1nE411r7TF
