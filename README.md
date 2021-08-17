@@ -30,7 +30,7 @@ IntelliJ IDEA + Navicat  + Git + Chrome
 
 导航栏功能，最新文章，最新推荐，根据分类和标签查看博客，归档，日排行榜等
 
-支持`<Redis>`缓存
+支持`Redis`缓存
 
 项目演示地址
 ------------
